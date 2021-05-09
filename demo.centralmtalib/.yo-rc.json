@@ -1,0 +1,16 @@
+{
+  "generator-ui5-library": {
+    "libraryname": "centralmtalib",
+    "namespace": "demo",
+    "framework": "SAPUI5",
+    "frameworkVersion": "1.86.3",
+    "author": "Yasutake",
+    "newdir": true,
+    "namespaceURI": "demo",
+    "librarynamespace": "demo.centralmtalib",
+    "librarynamespaceURI": "demo/centralmtalib",
+    "librarybasepath": "../../",
+    "frameworklowercase": "sapui5",
+    "setupCompleted": true
+  }
+}

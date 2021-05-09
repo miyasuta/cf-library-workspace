@@ -1,0 +1,66 @@
+_schema-version: "3.2"
+ID: demo-centralmtaapp
+description: A Fiori application.
+version: 0.0.1
+modules:
+- name: demo-centralmtaapp-dest-content
+  type: com.sap.application.content
+  requires:
+  - name: CentralMTA-destination-service
+    parameters:
+      content-target: true
+  - name: demo-centralmtaapp-repo-host
+    parameters:
+      service-key:
+        name: demo-centralmtaapp-repo-host-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: demo-centralmtaapp_repo_host
+          ServiceInstanceName: demo-centralmtaapp-html5-srv
+          ServiceKeyName: demo-centralmtaapp-repo-host-key
+          sap.cloud.service: CentralApprouter
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: demo-centralmtaapp-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: demo-centralmtaapp-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - democentralmtaapp.zip
+      name: democentralmtaapp
+      target-path: resources/
+- name: democentralmtaapp
+  type: html5
+  path: .
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: CentralMTA-destination-service
+  type: org.cloudfoundry.existing-service
+  parameters:
+    service: destination
+    service-name: CentralMTA-destination-service
+    service-plan: lite
+- name: demo-centralmtaapp-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: demo-centralmtaapp-html5-srv
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

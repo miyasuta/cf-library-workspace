@@ -1,0 +1,40 @@
+{
+    "name": "centralmtalib",
+    "version": "0.0.1",
+    "private": true,
+    "description": "A Fiori application.",
+    "keywords": [
+        "ui5",
+        "openui5",
+        "sapui5"
+    ],
+    "main": "webapp/index.html",
+    "scripts": {
+        "start": "fiori run --open 'test-resources/demo/centralmtalib/Example.html'",
+        "start-local": "fiori run --config ./ui5-local.yaml --open 'test-resources/demo/centralmtalib/Example.html'",
+        "build:cf": "npm run clean && ui5 build --include-task=generateManifestBundle generateCachebusterInfo && npm run flatten && npm run clean-after-flatten && cp ./xs-app.json dist  && npm run zip",
+        "zip": "cd dist && npx bestzip centralmtalib.zip *",
+        "flatten": "cp -r dist/resources/demo/centralmtalib/* dist && cp dist/resources/demo/centralmtalib/.library dist ",
+        "clean": "npx rimraf dist",
+        "clean-after-flatten": "rm -rf dist/resources dist/test-resources"
+    },
+    "devDependencies": {
+        "@sap/ui5-builder-webide-extension": "1.0.x",
+        "@sap/ux-ui5-tooling": "1",
+        "@ui5/cli": "^2.10.1",
+        "@ui5/fs": "^2.0.6",
+        "@ui5/logger": "^2.0.1",
+        "bestzip": "^2.2.0",
+        "mbt": "^1.0.15",
+        "rimraf": "3.0.2",
+        "ui5-task-zipper": "^0.3.1"
+    },
+    "ui5": {
+        "dependencies": [
+            "@sap/ux-ui5-tooling",
+            "@sap/ui5-builder-webide-extension",
+            "ui5-task-zipper",
+            "mbt"
+        ]
+    }
+}

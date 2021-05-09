@@ -1,0 +1,43 @@
+_schema-version: "3.2"
+ID: CentralMTA
+version: 0.0.1
+modules:
+- name: CentralMTA-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: CentralMTA-destination-service
+    parameters:
+      content-target: true
+  - name: uaa_CentralMTA
+    parameters:
+      service-key:
+        name: uaa_CentralMTA-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Authentication: OAuth2UserTokenExchange
+          Name: CentralApprouter_uaa_CentralMTA
+          ServiceInstanceName: CentralMTA-xsuaa-service
+          ServiceKeyName: uaa_CentralMTA-key
+          sap.cloud.service: CentralApprouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: CentralMTA-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: CentralMTA-destination-service
+    service-plan: lite
+- name: uaa_CentralMTA
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: CentralMTA-xsuaa-service
+    service-plan: application
